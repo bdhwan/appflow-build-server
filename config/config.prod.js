@@ -9,8 +9,7 @@ module.exports = {
         dateStrings: true
     },
     app: {
-        storage_path: '!!storage_path!!',
-        cache_url: '!!cache_url!!'
+        storage_path: '!!storage_path!!'
     }
 }
 
