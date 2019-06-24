@@ -26,7 +26,10 @@ app.get('/', function (req, res) {
     res.status(200).json('build server node-env:' + process.env.NODE_ENV);
 });
 
-app.use('/static', express.static(config.app.storage_path, {}));
+app.use('/static', express.static(config.app.storage_path, {
+    maxage: '1h',
+    etag: false
+}));
 
 app.listen(port, function () {
     console.log("http://localhost:" + port);
