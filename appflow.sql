@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db-master
--- 생성 시간: 19-06-23 16:55
+-- 생성 시간: 19-06-24 01:33
 -- 서버 버전: 10.3.13-MariaDB-1:10.3.13+maria~bionic-log
 -- PHP 버전: 7.2.15
 
@@ -35,6 +35,9 @@ CREATE TABLE `apps` (
   `git_url` varchar(255) NOT NULL,
   `git_user_pw` varchar(100) DEFAULT NULL,
   `git_user_id` varchar(100) DEFAULT NULL,
+  `git_web_url` varchar(255) DEFAULT NULL,
+  `git_web_user_id` varchar(50) DEFAULT NULL,
+  `git_web_user_pw` varchar(50) DEFAULT NULL,
   `cache_url` varchar(200) NOT NULL,
   `endpoint` varchar(200) NOT NULL,
   `android_link` varchar(255) DEFAULT NULL,

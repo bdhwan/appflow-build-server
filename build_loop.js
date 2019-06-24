@@ -3,6 +3,8 @@ const shell = require('shelljs');
 const apps_model = require('./model/apps_model');
 const config = require('./config/config');
 const fs = require('fs-extra');
+const tempDirectory = require('temp-dir');
+const utils = require('./services/utils');
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -41,7 +43,11 @@ async function buildLoopProcess() {
     await apps_model.update_build(aBuild.build_history_idx, 'building');
     const beginTime = new Date();
     try {
-        let git_url = aBuild.git_url;
+        let git_url = aBuild.git_url.trim();
+        console.log('aBuild.git_url = ' + aBuild.git_url);
+        console.log('aBuild.git_user_id = ' + aBuild.git_user_id);
+        console.log('aBuild.git_user_pw = ' + aBuild.git_user_pw);
+
         if (aBuild.git_user_id && aBuild.git_user_pw) {
             git_url = 'https://' + aBuild.git_user_id + ':' + encodeURIComponent(aBuild.git_user_pw) + '@' + git_url.replace('http://', '').replace('https://', '')
         }
@@ -66,7 +72,7 @@ async function doneBuild(auto_update, apps_idx, app_id, cache_url, channel_name,
     const snapshot = fs.readFileSync(snapshot_path, 'utf8').trim();
     if (result) {
         console.log('done update' + build_history_uuid + ', snapshot = ' + snapshot);
-        const url = cache_url + '/static/www/' + app_id + '_' + channel_name + '/' + snapshot
+        const url = cache_url + '/static/www/' + app_id + '/' + snapshot
         console.log('url = ' + url);
 
         const temp = {
@@ -83,6 +89,7 @@ async function doneBuild(auto_update, apps_idx, app_id, cache_url, channel_name,
 
         if (version.insertId && auto_update) {
             await apps_model.update_current_app_version(apps_idx, version.insertId);
+            deployWeb(version.insertId);
         }
     }
     const duration = now.getTime() - beginTime.getTime();
@@ -90,18 +97,57 @@ async function doneBuild(auto_update, apps_idx, app_id, cache_url, channel_name,
     await apps_model.update_build_history(build_history_idx, result, duration, 'done', log, error);
 }
 
+async function deployWeb(apps_version_idx) {
+    console.log('deployWeb =' + apps_version_idx);
+    const apps_version = await apps_model.get_apps_version(apps_version_idx);
+    console.log('apps_version = ', apps_version);
+
+    const app_data = await apps_model.get_app(apps_version.apps_idx);
+    console.log('app_data = ', app_data);
+
+    if (!app_data.git_web_url) {
+        throw 'no web git url'
+    }
+
+
+
+    const build_history_uuid = utils.get_uuid(100);
+    const workspace = tempDirectory + '/' + build_history_uuid;
+    console.log('workspace =' + workspace);
+
+
+    const source = config.app.storage_path + '/www/' + app_data.app_id + '/browser';
+    console.log('source =' + source);
+
+    let git_url = app_data.git_web_url.trim();
+    if (app_data.git_web_user_id) {
+        git_url = 'https://' + app_data.git_web_user_id + ':' + app_data.git_web_user_pw + '@' + app_data.git_web_url.replace('https://', '').replace('http://', '');
+    }
+    const script = 'sh script/deploy_web.sh ' + git_url + ' ' + source + ' ' + workspace;
+    console.log('script = ' + script);
+    const result = await buildProcessAsync(script);
+    console.log('done web deploy = ' + result);
+    // sh deploy_web.sh https://bdhwan:rock11481148@bitbucket.org/bdhwan/giftistar-ionic4-web.git /Users/bdhwan/Desktop/data/www/giftistar/1bc58ad026de5f32e5183760c7edd7a7bf95e628/browser /Users/bdhwan/Desktop/tempwork/
+
+}
+
+
+
+
 
 //쿠폰 발송 루프
 async function buildLoop() {
     console.log('start build loop');
     await apps_model.clear_building();
     buildLoopProcess();
+
 }
 
 
 
 module.exports = {
-    buildLoop: buildLoop
+    buildLoop: buildLoop,
+    deployWeb: deployWeb
 }
 
 

@@ -20,6 +20,13 @@ module.exports = {
         return await utils.query(pool, 'INSERT INTO apps_version SET ?', [data]);
     },
 
+    get_app: async (apps_idx) => {
+        return await utils.queryOne(pool, 'select * from  apps where apps_idx =  ? limit 1', [apps_idx]);
+    },
+
+    get_apps_version: async (apps_version_idx) => {
+        return await utils.queryOne(pool, 'select * from  apps_version where apps_version_idx =  ? limit 1', [apps_version_idx]);
+    },
     select_current_apps_version: async () => {
         return await utils.queryOne(pool, 'SELECT * from apps_version WHERE enabled = true order by apps_version_idx desc limit 1', []);
     },
