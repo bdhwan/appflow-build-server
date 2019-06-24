@@ -5,7 +5,9 @@ echo 'node_env - '${NODE_ENV}
 git_web_url=$1
 source=$2
 workspace=$3
+
 mkdir -p ${workspace}
+
 # clone source
 cd ${workspace}
 pwd
@@ -23,9 +25,11 @@ cd ${folder}
 pwd
 git reset --hard HEAD~1
 git pull
-
+echo 'will copy'
 cp -rf ${source} .
 echo 'will update'
 gitu upload
 echo 'done'
+rm -rf ${workspace}
 exit 0
+

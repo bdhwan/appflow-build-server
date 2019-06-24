@@ -12,6 +12,7 @@ channel_name=$6
 
 # prepare folder
 mkdir -p ${storage_path}
+
 mkdir -p ${storage_path}'/history/'
 mkdir -p ${storage_path}'/workspace/'
 mkdir -p ${storage_path}'/workspace/'${app_id}'_'${channel_name}
@@ -68,7 +69,7 @@ npm run build
 
 rm -rf ${snapshot}
 mkdir -p ${snapshot}
-cp -rf www ${snapshot}'/browser'
+cp -rf www ${snapshot}'/www'
 
 echo 'build android'
 ionic cordova platform rm android

@@ -113,21 +113,21 @@ async function deployWeb(apps_version_idx) {
 
     const build_history_uuid = utils.get_uuid(100);
     const workspace = tempDirectory + '/' + build_history_uuid;
-    console.log('workspace =' + workspace);
 
 
-    const source = config.app.storage_path + '/www/' + app_data.app_id + '/browser';
+    const source = config.app.storage_path + '/www/' + app_data.app_id + '/' + apps_version.snapshot + '/www';
     console.log('source =' + source);
 
     let git_url = app_data.git_web_url.trim();
     if (app_data.git_web_user_id) {
-        git_url = 'https://' + app_data.git_web_user_id + ':' + app_data.git_web_user_pw + '@' + app_data.git_web_url.replace('https://', '').replace('http://', '');
+        git_url = 'https://' + app_data.git_web_user_id + ':' + app_data.git_web_user_pw + '@' + git_url.replace('https://', '').replace('http://', '');
     }
     const script = 'sh script/deploy_web.sh ' + git_url + ' ' + source + ' ' + workspace;
     console.log('script = ' + script);
     const result = await buildProcessAsync(script);
     console.log('done web deploy = ' + result);
     // sh deploy_web.sh https://bdhwan:rock11481148@bitbucket.org/bdhwan/giftistar-ionic4-web.git /Users/bdhwan/Desktop/data/www/giftistar/1bc58ad026de5f32e5183760c7edd7a7bf95e628/browser /Users/bdhwan/Desktop/tempwork/
+    // sh script/deploy_web.sh https://bdhwan:rock11481148@bitbucket.org/bdhwan/giftistar-ionic4-web.git /home/storage/www/giftistar/www /tmp/f86bae2ee0ae4b0d8fb0516828c4e29b
 
 }
 
