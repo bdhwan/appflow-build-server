@@ -2,7 +2,6 @@
 pwd
 if [ -n "$DB_HOST" ]; then
   echo "DB_HOST ="$DB_HOST
-  mysql -h $DB_HOST --user=$DB_USER --password=$DB_PASSWORD --port $DB_PORT -e "CREATE DATABASE $DB_NAME"
   mysql -h $DB_HOST --user=$DB_USER --password=$DB_PASSWORD --port $DB_PORT -D $DB_NAME < appflow.sql
   mysql -h $DB_HOST --user=$DB_USER --password=$DB_PASSWORD --port $DB_PORT -e "delete from $DB_NAME.system"
   mysql -h $DB_HOST --user=$DB_USER --password=$DB_PASSWORD --port $DB_PORT -e "INSERT INTO $DB_NAME.system (user_id, password) VALUES ('$ADMIN_USER_ID', '$ADMIN_USER_PASSWORD');"

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db-master
--- 생성 시간: 19-06-24 01:33
+-- 생성 시간: 19-06-25 09:56
 -- 서버 버전: 10.3.13-MariaDB-1:10.3.13+maria~bionic-log
 -- PHP 버전: 7.2.15
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- 데이터베이스: `appflow`
 --
+CREATE DATABASE IF NOT EXISTS `appflow` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `appflow`;
 
 -- --------------------------------------------------------
 
@@ -31,6 +33,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `apps` (
   `apps_idx` int(11) NOT NULL,
   `app_id` varchar(100) NOT NULL,
+  `git_full_name` varchar(100) DEFAULT NULL,
   `channel_name` varchar(100) NOT NULL,
   `git_url` varchar(255) NOT NULL,
   `git_user_pw` varchar(100) DEFAULT NULL,
@@ -40,8 +43,8 @@ CREATE TABLE `apps` (
   `git_web_user_pw` varchar(50) DEFAULT NULL,
   `cache_url` varchar(200) NOT NULL,
   `endpoint` varchar(200) NOT NULL,
-  `android_link` varchar(255) DEFAULT NULL,
-  `ios_link` varchar(255) DEFAULT NULL,
+  `android_link` text DEFAULT NULL,
+  `ios_link` text DEFAULT NULL,
   `auto_update` tinyint(1) NOT NULL DEFAULT 0,
   `regist_datetime` datetime NOT NULL DEFAULT current_timestamp(),
   `update_datetime` datetime NOT NULL DEFAULT current_timestamp()
