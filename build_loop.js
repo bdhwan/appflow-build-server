@@ -44,12 +44,14 @@ async function buildLoopProcess() {
     const beginTime = new Date();
     try {
         let git_url = aBuild.git_url.trim();
-        console.log('aBuild.git_url = ' + aBuild.git_url);
         console.log('aBuild.git_user_id = ' + aBuild.git_user_id);
         console.log('aBuild.git_user_pw = ' + aBuild.git_user_pw);
 
         if (aBuild.git_user_id && aBuild.git_user_pw) {
-            git_url = 'https://' + aBuild.git_user_id + ':' + encodeURIComponent(aBuild.git_user_pw) + '@' + git_url.replace('http://', '').replace('https://', '')
+            git_url = 'https://' + aBuild.git_user_id + ':' + encodeURIComponent(aBuild.git_user_pw) + '@' + git_url;
+        }
+        else {
+            git_url = 'https://' + git_url;
         }
         console.log('final git url = ' + git_url);
         const script = 'sh script/build.sh ' + aBuild.build_history_uuid + ' ' + aBuild.build_history_idx + ' ' + git_url + ' ' + config.app.storage_path + ' ' + aBuild.app_id + ' ' + aBuild.channel_name;
@@ -120,7 +122,10 @@ async function deployWeb(apps_version_idx) {
 
     let git_url = app_data.git_web_url.trim();
     if (app_data.git_web_user_id) {
-        git_url = 'https://' + app_data.git_web_user_id + ':' + app_data.git_web_user_pw + '@' + git_url.replace('https://', '').replace('http://', '');
+        git_url = 'https://' + app_data.git_web_user_id + ':' + app_data.git_web_user_pw + '@' + git_url;
+    }
+    else {
+        git_url = 'https://' + git_url;
     }
     const script = 'sh script/deploy_web.sh ' + git_url + ' ' + source + ' ' + workspace;
     console.log('script = ' + script);
