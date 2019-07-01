@@ -69,13 +69,17 @@ npm run build
 
 rm -rf ${snapshot}
 mkdir -p ${snapshot}
+# cp -rf www ${snapshot}'/www'
+
+ionic cordova platform rm browser
+ionic cordova platform add browser
+npm run build_browser
 cp -rf www ${snapshot}'/www'
 
 echo 'build android'
 ionic cordova platform rm android
 ionic cordova platform add android
 npm run build_android
-
 cp -rf www ${snapshot}'/android'
 
 echo 'build ios'
