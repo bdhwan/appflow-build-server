@@ -27,11 +27,11 @@ function buildProcessAsync(script) {
 }
 
 async function buildLoopProcess() {
-    console.log('buildLoopProcess');
+    // console.log('buildLoopProcess');
     let aBuild = await apps_model.get_ready_build();
-    console.log('aBuild = ', aBuild);
+    // console.log('aBuild = ', aBuild);
     if (!aBuild) {
-        console.log('no more build will sleep 10 sec');
+        // console.log('no more build will sleep 10 sec');
         await sleep(1000 * 10);
         buildLoopProcess();
         return;
@@ -59,6 +59,7 @@ async function buildLoopProcess() {
         const result = await buildProcessAsync(script);
         // console.log('done =' + JSON.stringify(result));
         await doneBuild(aBuild.auto_update, aBuild.apps_idx, aBuild.app_id, aBuild.cache_url, aBuild.channel_name, aBuild.build_history_idx, aBuild.build_history_uuid, true, beginTime, null, null);
+        console.log('done bulid process -' + script);
 
     } catch (error) {
         console.log('build error =' + JSON.stringify(error));
