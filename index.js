@@ -12,7 +12,7 @@ app.use(cors());
 
 // LB 체크용 
 app.get('/healthcheck', function (req, res) {
-    console.log('healthcheck')
+    // console.log('healthcheck')
     res.status(200).json('build server node-env:' + process.env.NODE_ENV);
 });
 
@@ -34,8 +34,9 @@ app.use('/static', express.static(config.app.storage_path, {
 app.listen(port, function () {
     console.log("http://localhost:" + port);
     console.log("NODE_ENV:" + process.env.NODE_ENV);
-
 });
+
+
 loop.buildLoop();
 console.log("config:", config);
 

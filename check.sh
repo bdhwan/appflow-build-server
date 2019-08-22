@@ -19,5 +19,16 @@ echo 'DB_PORT' $DB_PORT
 
 pwd
 node config/fix_conf.js $STORAGE_PATH $CACHE_URL $DB_NAME $DB_HOST $DB_USER $DB_PASSWORD $DB_PORT
+
+if [ -n "$PM2_PUBLIC_KEY" ]; then
+  echo "PM2_PUBLIC_KEY ="$PM2_PUBLIC_KEY
+  pm2 link $PM2_PUBLIC_KEY $PM2_SECRET_KEY $MACHINE_NAME
+else
+  echo "No PM2_PUBLIC_KEY"
+fi
+
 pm2-docker process.yml
+
+
+
 
