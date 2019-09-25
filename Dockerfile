@@ -1,4 +1,4 @@
-FROM bdhwan/ionic-maria-pm2:1.3
+FROM bdhwan/ionic-maria-pm2:1.4
 LABEL maintainer=”bdhwan@gmail.com”
 
 USER root
