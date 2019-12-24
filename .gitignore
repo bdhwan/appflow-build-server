@@ -36,4 +36,6 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 api/static
 api/workspace
-config/config.js
+
+
+local.sh

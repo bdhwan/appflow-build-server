@@ -3,6 +3,9 @@ LABEL maintainer=”bdhwan@gmail.com”
 
 USER root
 
+
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
 # WORKDIR /home
 ADD . /home/appflow-build-server
 WORKDIR /home/appflow-build-server

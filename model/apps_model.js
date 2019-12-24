@@ -32,7 +32,7 @@ module.exports = {
     },
 
     get_ready_build: async () => {
-        return await utils.queryOne(pool, 'select * from (SELECT * FROM `build_history` WHERE status=?) a left join apps_version b on a.build_history_idx = b.build join apps c on a.apps_idx = c.apps_idx order by a.build_history_idx asc limit 1', ['ready']);
+        return await utils.queryOne(pool, 'select * from (SELECT * FROM `build_history` WHERE status=?) a left join apps_version b on a.build_history_idx = b.build join apps c on a.apps_idx = c.apps_idx order by a.build_history_idx desc limit 1', ['ready']);
     },
 
 
@@ -40,6 +40,10 @@ module.exports = {
 
     update_build: async (build_history_idx, status) => {
         return await utils.queryOne(pool, 'update build_history set status=? where build_history_idx = ? limit 1', [status, build_history_idx]);
+    },
+
+    update_build_others: async (build_history_idx) => {
+        return await utils.queryOne(pool, 'update build_history set status=? where build_history_idx < ? and status=? limit 1', ['skip','ready', build_history_idx]);
     },
 
     clear_building: async () => {

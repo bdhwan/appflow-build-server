@@ -50,7 +50,6 @@ git pull
 snapshot=$(git rev-parse --verify HEAD)
 
 
-
 echo 'done build'
 rm -rf ${storage_path}'/history/'${build_history_uuid}
 echo ${snapshot} >> ${storage_path}'/history/'${build_history_uuid}
@@ -71,23 +70,25 @@ rm -rf ${snapshot}
 mkdir -p ${snapshot}
 cp -rf www ${snapshot}'/www'
 
-echo 'build android'
-ionic cordova platform rm android
-ionic cordova platform add android
-npm run build_android
-cp -rf www ${snapshot}'/android'
+# echo 'build android'
+# ionic cordova platform rm android
+# ionic cordova platform add android
+# npm run build_android
+# cp -rf www ${snapshot}'/android'
 
-echo 'build ios'
-ionic cordova platform rm ios
-ionic cordova platform add ios
-npm run build_ios
-cp -rf www ${snapshot}'/ios'
+# echo 'build ios'
+# ionic cordova platform rm ios
+# ionic cordova platform add ios
+# npm run build_ios
+# cp -rf www ${snapshot}'/ios'
 
 pwd
-cp -rf ${snapshot} ${service_folder}'/'
 
 
-echo 'will delete ='${workspace}
+# cp -rf ${snapshot} ${service_folder}'/'
+az storage blob upload-batch --no-progress -d ${AZURE_CONTAINER_NAME}/${snapshot} -s ${snapshot}
+
+echo 'will delete ='${snapshot}
 rm -rf ${snapshot}
 echo 'ok'
 exit 0

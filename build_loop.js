@@ -41,6 +41,8 @@ async function buildLoopProcess() {
 
     //set status building
     await apps_model.update_build(aBuild.build_history_idx, 'building');
+    await apps_model.update_build_others(aBuild.build_history_idx);
+    
     const beginTime = new Date();
     try {
         let git_url = aBuild.git_url.trim();
