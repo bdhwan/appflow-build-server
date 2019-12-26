@@ -87,7 +87,7 @@ pwd
 
 # cp -rf ${snapshot} ${service_folder}'/'
 echo 'will upload folder'
-az storage blob upload-batch --debug --no-progress -d ${AZURE_CONTAINER_NAME}/${snapshot} -s ${snapshot}
+az storage blob upload-batch -t block --dryrun --no-progress -d ${AZURE_CONTAINER_NAME}/${snapshot} -s ${snapshot}
 echo 'will delete ='${snapshot}
 rm -rf ${snapshot}
 echo 'ok'
