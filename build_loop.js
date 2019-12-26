@@ -37,8 +37,6 @@ async function buildLoopProcess() {
         return;
     }
 
-
-
     //set status building
     await apps_model.update_build(aBuild.build_history_idx, 'building');
     await apps_model.update_build_others(aBuild.build_history_idx);
